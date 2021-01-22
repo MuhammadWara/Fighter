@@ -3,7 +3,7 @@ pipeline {
            stages {
                 stage("Hello Feature Branch") {
                      steps {
-                          echo 'Hello World from the Practice Branch'
+                          echo 'Hello, World from the Practice Branch'
                      }
                 }
            }
