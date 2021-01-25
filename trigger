@@ -1,1 +1,1 @@
-this new trigger is working
+this new trigger is working fine now
