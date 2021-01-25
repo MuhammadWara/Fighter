@@ -1,1 +1,2 @@
-Hello trigger From Wara
+Hello trigger From Wara.
+
