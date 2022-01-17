@@ -24,10 +24,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Clean with Gradle
-      run: |
-        - 'ls -lah'
-        - ls
-        - cat local.properties
+      run: ls
+    - name: Clean with Gradle  
+      run: cat local.properties
     - name: Clean with Gradle
       run: ./gradlew clean      
     - name: Build with Gradle
