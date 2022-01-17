@@ -25,7 +25,8 @@ jobs:
       run: chmod +x gradlew
     - name: Clean with Gradle
       run: |
-        - ls -lah
+        - 'ls -lah'
+        - ls
         - cat local.properties
     - name: Clean with Gradle
       run: ./gradlew clean      
