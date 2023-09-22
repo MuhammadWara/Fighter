@@ -1,0 +1,37 @@
+name: Get Workflow Run Link
+
+on:
+  workflow_dispatch:
+    inputs:
+      workflow_name:
+        description: 'Enter the name of the workflow'
+        required: true
+
+jobs:
+  get_workflow_link:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git
+        uses: actions/checkout@v2
+
+      - name: Get Workflow Run ID
+        id: get_workflow_run_id
+        run: |
+          workflow_name="${{ github.event.inputs.workflow_name }}"
+          workflow_run_url=$(curl -s -X GET "https://api.github.com/repos/${{ github.repository }}/actions/workflows" | jq -r --arg workflow_name "$workflow_name" '.workflows[] | select(.name == $workflow_name) | .url')
+          workflow_run_id=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -X POST "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${workflow_run_url}/dispatches" | jq -r '.id')
+          echo "::set-output name=workflow_run_id::${workflow_run_id}"
+          echo "::set-output name=workflow_run_url::${workflow_run_url}"
+
+      - name: Get Workflow Run Link
+        id: get_workflow_run_link
+        run: |
+          workflow_run_id="${{ steps.get_workflow_run_id.outputs.workflow_run_id }}"
+          workflow_run_url="${{ steps.get_workflow_run_id.outputs.workflow_run_url }}"
+          workflow_run_link="https://github.com/${{ github.repository }}/actions/runs/${workflow_run_id}"
+          echo "::set-output name=workflow_run_link::${workflow_run_link}"
+
+      - name: Provide Workflow Run Link
+        run: |
+          echo "Workflow Run Link: ${{ steps.get_workflow_run_link.outputs.workflow_run_link }}"
